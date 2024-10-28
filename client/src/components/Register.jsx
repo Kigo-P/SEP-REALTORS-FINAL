@@ -20,7 +20,7 @@ function Register({ onClose }) {
             setLoading(true);
 
             try {
-                const response = await fetch('/users', {
+                const response = await fetch('https://sep-realtors-final.onrender.com/users', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

@@ -21,7 +21,7 @@ const Listing = () => {
 
     useEffect(() => {
 
-        fetch(`/users/${id}`)
+        fetch(`https://sep-realtors-final.onrender.com/users/${id}`)
             .then((response) => response.json())
             .then((data) => setUser(data))
             .catch((error) => console.error('Error fetching bought properties:', error));
@@ -29,7 +29,7 @@ const Listing = () => {
 
     useEffect(() => {
         setIsLoading(true);
-        fetch("/properties",{
+        fetch("https://sep-realtors-final.onrender.com/properties",{
             method: "GET",
             headers:{
                 'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ const Listing = () => {
     };
     
     const handleBuyProperty = (propertyId, userId) => {
-        fetch(`/properties/${propertyId}/purchase`, {
+        fetch(`https://sep-realtors-final.onrender.com/properties/${propertyId}/purchase`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',

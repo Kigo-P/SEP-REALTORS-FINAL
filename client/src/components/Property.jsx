@@ -18,7 +18,7 @@ const Property = () => {
     const fetchProperty = async () => {
       try {
         setIsLoading(true);
-        const res = await fetch(`/properties/${id}`,{
+        const res = await fetch(`https://sep-realtors-final.onrender.com/properties/${id}`,{
           method: "GET",
           headers:{
             'Content-Type': 'application/json',

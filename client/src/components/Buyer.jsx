@@ -15,7 +15,7 @@ const BuyerPage = () => {
     
     useEffect(() => {
         
-        fetch(`/purchase-requests/${id}`,{
+        fetch(`https://sep-realtors-final.onrender.com/purchase-requests/${id}`,{
             method: "GET",
             headers:{
               'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ const BuyerPage = () => {
             .then((data) => setBoughtProperties(data))
             .catch((error) => console.error('Error fetching bought properties:', error));
         
-        fetch(`/users/${id}`)
+        fetch(`https://sep-realtors-final.onrender.com/users/${id}`)
             .then((response) => response.json())
             .then((data) => {
                 setUser(data)

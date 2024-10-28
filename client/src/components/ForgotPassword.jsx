@@ -37,7 +37,7 @@ function ForgotPassword() {
         onSubmit: async (values) => {
             setLoading(true);
             try {
-                const response = await fetch(`/user-by-email/${values.email}`, {
+                const response = await fetch(`https://sep-realtors-final.onrender.com/user-by-email/${values.email}`, {
                     method: "PATCH",
                     headers: {
                         "Content-Type": "application/json",
