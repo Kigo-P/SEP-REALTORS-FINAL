@@ -44,6 +44,7 @@ function Login({ closeModal }) {
         setLoading(false);
 
         if (data.user_data) {
+          console.log(data)
           localStorage.setItem("access_token", data.access_token);
           localStorage.setItem("user_id", data.user_data.id);
           if (data.user_data.user_role === "admin") {

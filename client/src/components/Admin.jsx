@@ -34,7 +34,7 @@ const AdminPage = () => {
             .catch((error) => console.error('Error fetching bought properties:', error));
     }, [id]);
 
-
+    console.log(purchaseRequests)
     useEffect(() => {
         if (activeTab === 'boughtProperties') {
             fetch('https://sep-realtors-final.onrender.com/bought-properties',{

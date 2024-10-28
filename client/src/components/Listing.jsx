@@ -26,7 +26,7 @@ const Listing = () => {
             .then((data) => setUser(data))
             .catch((error) => console.error('Error fetching bought properties:', error));
     }, [id]);
-
+    console.log(localStorage.getItem("access_token"))
     useEffect(() => {
         setIsLoading(true);
         fetch("https://sep-realtors-final.onrender.com/properties",{

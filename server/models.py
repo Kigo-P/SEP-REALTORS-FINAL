@@ -204,11 +204,11 @@ class Infrastructure(db.Model, SerializerMixin):
     pass
 
     
-#  creating a model called TokenBlocklist that will be responsible when the user logs out
-class TokenBlocklist(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    jti = db.Column(db.String(), nullable=False, index=True)
-    created_at = db.Column(db.DateTime,default=datetime.utcnow)
+# #  creating a model called TokenBlocklist that will be responsible when the user logs out
+# class TokenBlocklist(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     jti = db.Column(db.String(), nullable=False, index=True)
+#     created_at = db.Column(db.DateTime,default=datetime.utcnow)
 
 
 class PurchaseRequest(db.Model, SerializerMixin):
