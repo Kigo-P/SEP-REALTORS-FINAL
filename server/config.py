@@ -12,7 +12,7 @@ from datetime import timedelta
 #  Initializing the app with flask
 app = Flask(__name__)
 # configuring the app and setting up a sqlite database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://sep_realtors_db_5vy8_user:RFH908oQm9cnTslWLVnfADw6isqf38cm@dpg-csd8mru8ii6s73fc5o2g-a.oregon-postgres.render.com/sep_realtors_db_5vy8'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://sep_d_user:JbpEbWg35VFG013Vn9aRp3rE2AWwQZJG@dpg-csftb7pu0jms73fmcorg-a.oregon-postgres.render.com/sep_d'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = '0c3ZMJFCAm5T-NK5ZzBv50ZLuxamAllTob6uzEqRR14'
 app.config['JWT_ACCESS_TOKEN_EXPIRES']=timedelta(minutes=30)

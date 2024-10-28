@@ -6,8 +6,6 @@ from flask_jwt_extended import create_access_token,JWTManager, create_refresh_to
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import request,make_response,jsonify
 from flask_restful import Resource
-from datetime import timezone
-import datetime
 from functools import wraps
 
 import os

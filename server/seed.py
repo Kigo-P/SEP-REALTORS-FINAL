@@ -17,7 +17,7 @@ with app.app_context():
     Buyer.query.delete()
     Admin.query.delete()
     User.query.delete()
-    db.session.commit()  # Commit deletions
+    db.session.commit()  
 
     # Create User instances
     users = [
@@ -28,13 +28,13 @@ with app.app_context():
     ]
 
     db.session.add_all(users)
-    db.session.commit()  # Ensure all users are committed before proceeding
+    db.session.commit() 
 
     # Create Admin instance for the first user
     first_user = User.query.filter_by(email="alicew42@gmail.com").first()
     if first_user:
         admins = [
-            Admin(email="alicew@gmail.com", password=generate_password_hash("12345"), user_id=first_user.id)
+            Admin(email="alicew42@gmail.com", password=generate_password_hash("12345"), user_id=first_user.id)
         ]
         db.session.add_all(admins)
         db.session.commit()
