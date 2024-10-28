@@ -93,7 +93,7 @@ const Listing = () => {
         .then((response) => response.json())
         .then(data => {
             console.log(data);
-            // Update the local state for the purchased property
+            
             setProperties((prevProperties) =>
                 prevProperties.map((property) => {
                     if (property.id === propertyId) {
@@ -101,7 +101,7 @@ const Listing = () => {
                             ...property,
                             purchase_requests: [...property.purchase_requests, {
                                 status: "pending",
-                                // Add any other fields returned in the purchase response if needed
+                                
                             }]
                         };
                     }
