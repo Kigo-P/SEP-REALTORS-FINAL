@@ -15,7 +15,7 @@ const BuyerPage = () => {
     
     useEffect(() => {
         
-        fetch(`https://sep-realators.onrender.com/purchase-requests/${id}`,{
+        fetch(`/purchase-requests/${id}`,{
             method: "GET",
             headers:{
               'Content-Type': 'application/json',
@@ -27,10 +27,13 @@ const BuyerPage = () => {
             .then((data) => setBoughtProperties(data))
             .catch((error) => console.error('Error fetching bought properties:', error));
         
-        fetch(`https://sep-realators.onrender.com/users/${id}`)
+        fetch(`/users/${id}`)
             .then((response) => response.json())
-            .then((data) => setUser(data))
+            .then((data) => {
+                setUser(data)
+            })
             .catch((error) => console.error('Error fetching user:', error));
+
     }, [id]);
 
 
@@ -105,7 +108,10 @@ const BuyerPage = () => {
                                 ...styles.tabItem,
                                 ...(activeTab === 'postProperty' ? styles.activeTab : styles.inactiveTab)
                             }} 
-                            onClick={() => setActiveTab('postProperty')}
+                            onClick={() => 
+                                setActiveTab('postProperty')
+
+                            }
                         >
                             List of Bought Properties
                         </li>

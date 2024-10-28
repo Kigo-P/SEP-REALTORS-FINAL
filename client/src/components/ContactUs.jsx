@@ -40,7 +40,7 @@ function ContactUs() {
 
       try {
        
-        const response = await fetch('https://sep-realators.onrender.com/contact-uss', {
+        const response = await fetch('/contact-uss', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

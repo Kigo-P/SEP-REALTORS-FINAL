@@ -7,6 +7,7 @@ import "./App3.css";
 function NewPropertyForm() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
+    
 
     
     const initialValues = {
@@ -47,7 +48,7 @@ function NewPropertyForm() {
                 price: Number(values.price) 
             };
 
-            fetch("https://sep-realators.onrender.com/properties", {
+            fetch("/properties", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -55,12 +56,15 @@ function NewPropertyForm() {
                 },
                 body: JSON.stringify(dataToSubmit),
             })
-            .then((r) => r.json())
-            .then((data) => {
-                console.log("Property submitted:", data);
-                setIsSubmitting(false);
-                formik.resetForm();
-                navigate('/listing');
+            .then((r) => {
+                if (r.ok){
+                    return r.json().then((data) => {
+                        console.log("Property submitted:", data);
+                        setIsSubmitting(false);
+                        formik.resetForm();
+                        window.location.reload()
+                    })
+                }
             })
             .catch((error) => {
                 console.error("Error submitting property:", error);

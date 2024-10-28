@@ -21,7 +21,7 @@ const Listing = () => {
 
     useEffect(() => {
 
-        fetch(`https://sep-realators.onrender.com/users/${id}`)
+        fetch(`/users/${id}`)
             .then((response) => response.json())
             .then((data) => setUser(data))
             .catch((error) => console.error('Error fetching bought properties:', error));
@@ -29,7 +29,7 @@ const Listing = () => {
 
     useEffect(() => {
         setIsLoading(true);
-        fetch("https://sep-realators.onrender.com/properties",{
+        fetch("/properties",{
             method: "GET",
             headers:{
                 'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ const Listing = () => {
     };
     
     const handleBuyProperty = (propertyId, userId) => {
-        fetch(`https://sep-realators.onrender.com/properties/${propertyId}/purchase`, {
+        fetch(`/properties/${propertyId}/purchase`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -197,7 +197,7 @@ const Listing = () => {
                         font-family: Arial, sans-serif;
                         max-width: 1200px;
                         margin: 0 auto;
-                        padding: 10px;
+                        padding: 12px;
                     }
 
                     .property-grid {

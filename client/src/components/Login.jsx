@@ -32,7 +32,7 @@ function Login({ closeModal }) {
       setError(null);
 
       try {
-        const response = await fetch("https://sep-realators.onrender.com/login", {
+        const response = await fetch("/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

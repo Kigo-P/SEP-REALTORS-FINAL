@@ -17,6 +17,7 @@ const AdminPage = () => {
     const [user, setUser] = useState(null);
     const [admins, setAdmins] = useState([]);
     const [contacts, setContacts] = useState([]);
+    const [disabledRequests, setDisabledRequests] = useState([]);
 
     const params = useParams();
     const id = params.id
@@ -27,7 +28,7 @@ const AdminPage = () => {
     
 
     useEffect(() => {
-        fetch(`https://sep-realators.onrender.com/users/${id}`)
+        fetch(`/users/${id}`)
             .then((response) => response.json())
             .then((data) => setUser(data))
             .catch((error) => console.error('Error fetching bought properties:', error));
@@ -36,7 +37,7 @@ const AdminPage = () => {
 
     useEffect(() => {
         if (activeTab === 'boughtProperties') {
-            fetch('https://sep-realators.onrender.com/bought-properties',{
+            fetch('/bought-properties',{
                 method: "GET",
                 headers:{
                     'Content-Type': 'application/json',
@@ -49,7 +50,7 @@ const AdminPage = () => {
                 .catch(error => console.error('Error fetching purchase requests:', error));
 
         } else if (activeTab === 'updateProperty' || activeTab === 'deleteProperty') {
-            fetch('https://sep-realators.onrender.com/properties', {
+            fetch('/properties', {
                 method: "GET",
                 headers:{
                     'Content-Type': 'application/json',
@@ -64,7 +65,7 @@ const AdminPage = () => {
                 })
                 .catch(error => console.error('Error fetching properties:', error));
         } else if (activeTab === 'approvePurchases') {
-            fetch('https://sep-realators.onrender.com/purchases',{
+            fetch('/purchases',{
                 method: "GET",
                 headers:{
                     'Content-Type': 'application/json',
@@ -76,7 +77,7 @@ const AdminPage = () => {
                 .then(data => setPurchaseRequests(data))
                 .catch(error => console.error('Error fetching purchase requests:', error));        
         }else if (activeTab === 'deleteAdmins'){
-            fetch('https://sep-realators.onrender.com/admins',{
+            fetch('/admins',{
                 method: "GET",
                 headers:{
                     'Content-Type': 'application/json',
@@ -89,7 +90,7 @@ const AdminPage = () => {
                 .catch(error => console.error('Error fetching admins:', error)); 
         }
         else if (activeTab === 'contactUs'){
-            fetch('https://sep-realators.onrender.com/contact-uss',{
+            fetch('/contact-uss',{
                 method: "GET",
                 headers:{
                     'Content-Type': 'application/json',
@@ -104,7 +105,7 @@ const AdminPage = () => {
     }, [activeTab]);
 
     const handleUpdateProperty = (propertyId, updatedData) => {
-        fetch(`https://sep-realators.onrender.com/properties/${propertyId}`, {
+        fetch(`/properties/${propertyId}`, {
             method: 'PATCH',
             body: JSON.stringify(updatedData),
             headers: {
@@ -120,12 +121,13 @@ const AdminPage = () => {
             ));
             setActiveTab('updateProperty');
             navigate(`/property/${propertyId}`)
+          
         })
         .catch(error => console.error('Error updating property:', error));
     };
 
     const handleDeleteProperty = (propertyId) => {
-        fetch(`https://sep-realators.onrender.com/properties/${propertyId}`, {
+        fetch(`/properties/${propertyId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -143,7 +145,10 @@ const AdminPage = () => {
 
 
     function handleApproveRequest(id){
-        fetch(`https://sep-realators.onrender.com/purchase-requests/${id}`, {
+
+        setDisabledRequests((prev) => [...prev, id]);
+
+        fetch(`/purchase-requests/${id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -153,7 +158,10 @@ const AdminPage = () => {
             body: JSON.stringify({status: "approved"})
         })
         .then((response)=>(response.json()))
-        .then(data =>console.log(data))
+        .then(data =>{
+            console.log(data)
+            
+        })
         .catch((error) => {
             console.error('Error approving purchase:', error);
             alert('Failed to approve purchase.');
@@ -162,7 +170,10 @@ const AdminPage = () => {
     
 
         function handleRejectRequest(id){
-            fetch(`https://sep-realators.onrender.com/purchase-requests/${id}`, {
+
+            setDisabledRequests((prev) => [...prev, id]);
+            
+            fetch(`/purchase-requests/${id}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -172,14 +183,17 @@ const AdminPage = () => {
                 body: JSON.stringify({status: "rejected"})
             })
             .then((response)=>(response.json()))
-            .then(data =>console.log(data))
+            .then(data =>{
+                console.log(data)
+                
+            })
             .catch((error) => {
                 console.error('Error approving purchase:', error);
                 alert('Failed to approve purchase.');
             });
         }
     const handleDeleteAdmin = (id) => {
-        fetch(`https://sep-realators.onrender.com/users/${id}`, {
+        fetch(`/users/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -359,13 +373,23 @@ const AdminPage = () => {
                                     <div className="mt-4">
                                     <button 
                                         onClick={() => handleApproveRequest(request.id)} 
-                                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mr-2"
+                                        className={`px-4 py-2 rounded mr-2 
+                                            ${disabledRequests.includes(request.id) 
+                                                ? "bg-green-500 text-white opacity-50 cursor-not-allowed" 
+                                                : "bg-green-500 text-white hover:bg-green-600"}`
+                                        }
+                                        disabled={disabledRequests.includes(request.id)}
                                     >
                                         Approve
                                     </button>
                                         <button 
                                             onClick={() => handleRejectRequest(request.id)} 
-                                            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                                            className={`px-4 py-2 rounded 
+                                                ${disabledRequests.includes(request.id) 
+                                                    ? "bg-red-500 text-white opacity-50 cursor-not-allowed" 
+                                                    : "bg-red-500 text-white hover:bg-red-600"}`
+                                            }
+                                            disabled={disabledRequests.includes(request.id)}
                                         >
                                             Reject
                                         </button>
