@@ -19,7 +19,7 @@ with app.app_context():
         {'first_name': 'Abel', 'last_name': 'Mutua', 'email': 'abelchizzy@gmail.com', 'password': '12345', 'contact': '734212334', 'user_role': 'buyer'},
     ]
 
-    created_users = []  # To keep track of created user IDs
+    created_users = []  
 
     for user_data in users:
         existing_user = User.query.filter_by(email=user_data['email']).first()
@@ -30,7 +30,7 @@ with app.app_context():
 
         new_user = User(**user_data)
         db.session.add(new_user)
-        created_users.append(new_user)  # Add the new user to the list
+        created_users.append(new_user)  
 
     try:
         db.session.commit()
