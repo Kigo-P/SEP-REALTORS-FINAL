@@ -5,26 +5,8 @@ function NavMenu() {
     const navigate = useNavigate();
     
     function handleLogout() {
-        fetch('https://sep-realtors-final.onrender.com/logout', {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${localStorage.getItem("access_token")}`
-            }
-        })
-        .then((response) => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error("Failed to logout");
-            }
-        })
-        .then((data) => {
-            localStorage.removeItem("access_token");
-            localStorage.removeItem("user_id");
-            navigate("/");
-        })
-        .catch((error) => console.error("Error during logout:", error));
+        localStorage.removeItem("user_id");
+        navigate("/");
     }
 
     return (

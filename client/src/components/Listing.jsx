@@ -108,6 +108,7 @@ const Listing = () => {
                     return property;
                 })
             );
+            window.location.reload()
         })
         .catch(error => {
             console.error('Error buying property:', error);
@@ -161,6 +162,7 @@ const Listing = () => {
                                                             if (item.purchase_requests[item.purchase_requests.length - 1].status === 'rejected') {
                                                                 handleBuyProperty(item.id, user.id);
                                                             }
+                                                            
                                                         }}
                                                         disabled={item.purchase_requests[item.purchase_requests.length - 1].status === 'pending' || 
                                                                 item.purchase_requests[item.purchase_requests.length - 1].status === 'approved'}
