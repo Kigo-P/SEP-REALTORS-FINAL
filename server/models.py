@@ -1,7 +1,6 @@
 from sqlalchemy.orm import validates
 from sqlalchemy_serializer import SerializerMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime
 
 
 from config import db
@@ -203,12 +202,7 @@ class Infrastructure(db.Model, SerializerMixin):
 
     pass
 
-    
-# #  creating a model called TokenBlocklist that will be responsible when the user logs out
-# class TokenBlocklist(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     jti = db.Column(db.String(), nullable=False, index=True)
-#     created_at = db.Column(db.DateTime,default=datetime.utcnow)
+
 
 
 class PurchaseRequest(db.Model, SerializerMixin):
