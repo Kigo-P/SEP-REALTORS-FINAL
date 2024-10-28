@@ -1,91 +1,73 @@
 from random import choice as rc
 from faker import Faker
 from config import app
-from models import db, User, Admin, Buyer, Property, Feature, Image, Infrastructure
+from models import db, User, Admin, Buyer, Property, Feature, Image, Infrastructure, PurchaseRequest
 from werkzeug.security import generate_password_hash
 
 with app.app_context():
-
-    #  dropping and creating all tables
-    # db.drop_all()
-    # db.create_all()
-
     # Initialize Faker
     fake = Faker()
 
-    # Property types
-    property_type_list = ['Apartment', 'Bedsitter', 'Block of flats', 'Bungalow', 'House', 'Mansion', 'Penthouse', 'Villa']
+    # Delete all existing records in each table
+    PurchaseRequest.query.delete()
+    Infrastructure.query.delete()
+    Image.query.delete()
+    Feature.query.delete()
+    Property.query.delete()
+    Buyer.query.delete()
+    Admin.query.delete()
+    User.query.delete()
+    db.session.commit()  # Commit deletions
 
+    # Create User instances
     users = [
-        {'first_name': 'Alice', 'last_name': 'Wahome', 'email': 'alicew@gmail.com', 'password': '12345', 'contact': '720114113', 'user_role': 'admin'},
-        {'first_name': 'Bob', 'last_name': 'Onyango', 'email': 'bobonyango@gmail.com', 'password': '12345', 'contact': '798012234', 'user_role': 'buyer'},
-        {'first_name': 'Mary', 'last_name': 'Mumbua', 'email': 'mumbuam@gmail.com', 'password': '12345', 'contact': '721134890', 'user_role': 'buyer'},
-        {'first_name': 'Abel', 'last_name': 'Mutua', 'email': 'abelchizzy@gmail.com', 'password': '12345', 'contact': '734212334', 'user_role': 'buyer'},
+        User(first_name="Alice", last_name="Wahome", email="alicew42@gmail.com", password=generate_password_hash("12345"), contact=720114113, user_role="admin"),
+        User(first_name="Bob", last_name="Onyango", email="bobonyango12@gmail.com", password=generate_password_hash("12345"), contact=798012234, user_role="buyer"),
+        User(first_name="Mary", last_name="Mumbua", email="mumbuam13@gmail.com", password=generate_password_hash("12345"), contact=721134890, user_role="buyer"),
+        User(first_name="Abel", last_name="Mutua", email="abelchizzy68@gmail.com", password=generate_password_hash("12345"), contact=734212334, user_role="buyer")
     ]
 
-    created_users = []  
+    db.session.add_all(users)
+    db.session.commit()  # Ensure all users are committed before proceeding
 
-    for user_data in users:
-        existing_user = User.query.filter_by(email=user_data['email']).first()
-        
-        if existing_user:
-            print(f"User with email {user_data['email']} already exists. Skipping.")
-            continue  
-
-        new_user = User(**user_data)
-        db.session.add(new_user)
-        created_users.append(new_user)  
-
-    try:
+    # Create Admin instance for the first user
+    first_user = User.query.filter_by(email="alicew42@gmail.com").first()
+    if first_user:
+        admins = [
+            Admin(email="alicew@gmail.com", password=generate_password_hash("12345"), user_id=first_user.id)
+        ]
+        db.session.add_all(admins)
         db.session.commit()
-        print("Users added successfully.")
-    except Exception as e:
-        print(f"Error adding users: {e}")
-        db.session.rollback()
 
-    # Create Admin instances
-    if created_users:
-        try:
-            admins = [Admin(user_id=created_users[0].id)]  # Linking the first created user (Alice) to Admin role
-            db.session.add_all(admins)
-            db.session.commit()
-        except Exception as e:
-            print(f"Error adding admins: {e}")
-
-    # Create Buyer instances
-    buyers = []
-    for created_user in created_users[1:]:  # Skip the first user since they are admin
-        buyers.append(Buyer(user_id=created_user.id))
-    
-    try:
+    # Now create Buyer instances, referencing user_ids that exist
+    bob = User.query.filter_by(email="bobonyango12@gmail.com").first()
+    mary = User.query.filter_by(email="mumbuam13@gmail.com").first()
+    if bob and mary:
+        buyers = [
+            Buyer(email=bob.email, password=generate_password_hash("12345"), user_id=bob.id),
+            Buyer(email=mary.email, password=generate_password_hash("12345"), user_id=mary.id)
+        ]
         db.session.add_all(buyers)
         db.session.commit()
-    except Exception as e:
-        print(f"Error adding buyers: {e}")
 
     # Create Property instances
     properties = [
-        Property(title="Luxury Apartment", price=300000, description="A beautiful luxury apartment in the city center.", location="Westlands", property_type=rc(property_type_list)),
-        Property(title="Cozy Cottage", price=150000, description="A cozy cottage in the countryside.", location="Kilimani", property_type=rc(property_type_list)),
-        Property(title="Modern Villa", price=210000, description="A modern villa with stunning views.", location="Lavingtone", property_type=rc(property_type_list)),
-        Property(title="Charming Bungalow", price=250000, description="A charming bungalow perfect for families.", location="Kileleshwa", property_type=rc(property_type_list)),
-        Property(title="Stylish Penthouse", price=280000, description="A stylish penthouse in a prime location.", location="Upperhill", property_type=rc(property_type_list))
+        Property(title="Luxury Apartment", price=300000, description="A beautiful luxury apartment in the city center.", location="Westlands", property_type="Apartment"),
+        Property(title="Cozy Cottage", price=150000, description="A cozy cottage in the countryside.", location="Kilimani", property_type="Cottage"),
+        Property(title="Modern Villa", price=210000, description="A modern villa with stunning views.", location="Lavingtone", property_type="Villa"),
+        Property(title="Charming Bungalow", price=250000, description="A charming bungalow perfect for families.", location="Kileleshwa", property_type="Bungalow"),
+        Property(title="Stylish Penthouse", price=280000, description="A stylish penthouse in a prime location.", location="Upperhill", property_type="Penthouse")
     ]
 
-    try:
-        db.session.add_all(properties)
-        db.session.commit()
-    except Exception as e:
-        print(f"Error adding properties: {e}")
+    db.session.add_all(properties)
+    db.session.commit()  # Ensure properties are committed before referencing them in features
 
-    # Fetch the newly created properties
+    # Retrieve property instances by title to avoid hardcoded IDs
     luxury_apartment = Property.query.filter_by(title="Luxury Apartment").first()
     cozy_cottage = Property.query.filter_by(title="Cozy Cottage").first()
     modern_villa = Property.query.filter_by(title="Modern Villa").first()
-    charming_bungalow = Property.query.filter_by(title="Charming Bungalow").first()
-    stylish_penthouse = Property.query.filter_by(title="Stylish Penthouse").first()
 
-    # Create Feature instances
+    # Create Feature instances with fetched IDs
     features = [
         Feature(name="Gym", property_id=luxury_apartment.id),
         Feature(name="Balcony", property_id=luxury_apartment.id),
@@ -94,26 +76,20 @@ with app.app_context():
         Feature(name="Smart Home Technology", property_id=modern_villa.id)
     ]
 
-    try:
-        db.session.add_all(features)
-        db.session.commit()
-    except Exception as e:
-        print(f"Error adding features: {e}")
+    db.session.add_all(features)
+    db.session.commit()
 
     # Create Image instances
     images = [
         Image(name="https://images.pexels.com/photos/430216/pexels-photo-430216.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", property_id=luxury_apartment.id),
-        Image(name="https://images.pexels.com/photos/17832880/pexels-photo-17832880/free-photo-of-a-bungalow-by-the-hill.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", property_id=cozy_cottage.id),
+        Image(name="https://images.pexels.com/photos/1131573/pexels-photo-1131573.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", property_id=cozy_cottage.id),
         Image(name="https://images.pexels.com/photos/36355/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", property_id=modern_villa.id),
-        Image(name="https://images.pexels.com/photos/2416472/pexels-photo-2416472.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", property_id=charming_bungalow.id),
-        Image(name="https://images.pexels.com/photos/7078231/pexels-photo-7078231.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", property_id=stylish_penthouse.id)
+        Image(name="https://images.pexels.com/photos/2416472/pexels-photo-2416472.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", property_id=properties[3].id),
+        Image(name="https://images.pexels.com/photos/7078231/pexels-photo-7078231.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", property_id=properties[4].id)
     ]
 
-    try:
-        db.session.add_all(images)
-        db.session.commit()
-    except Exception as e:
-        print(f"Error adding images: {e}")
+    db.session.add_all(images)
+    db.session.commit()
 
     # Create Infrastructure instances
     infrastructures = [
@@ -124,10 +100,5 @@ with app.app_context():
         Infrastructure(name="Private Garden", property_id=modern_villa.id)
     ]
 
-    try:
-        db.session.add_all(infrastructures)
-        db.session.commit()
-    except Exception as e:
-        print(f"Error adding infrastructures: {e}")
-
-    print("Database seeded successfully")
+    db.session.add_all(infrastructures)
+    db.session.commit()
