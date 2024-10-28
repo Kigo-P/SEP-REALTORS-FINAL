@@ -1,0 +1,162 @@
+/* body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    padding: 20px;
+  }
+  
+  .form-container {
+    max-width: 600px;
+    margin: auto auto;
+    background: white;
+    align-self: auto;
+    padding: 40px;
+    border-radius: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="tel"],
+  select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button {
+    width: 100%;
+    padding: 10px;
+    background-color: #be1c88;
+    color: rgb(241, 233, 233);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #961f68;
+  }
+  
+  .App {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .grid-item {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  .filter-container {
+    margin: 20px 0;
+  }
+  
+  .empty-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+  }
+  
+  .skeleton {
+    height: 200px;
+    background: #e0e0e0;
+    border-radius: 8px;
+  }
+  /* Container to fill the screen */
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+}
+
+/* Styling for the content inside the container */
+.content h1 {
+  font-size: 10rem;
+  font-weight: bold;
+}
+
+.content p {
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+}
+
+/* Styling for the "Go Back Home" button */ */
+.home-button {
+  padding: 10px 20px;
+  background-color: #137b33;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-size: 1rem;
+}
+
+.home-button:hover {
+  background-color: #106429;
+}
+/* ErrorBoundary.css */
+
+.error-container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.error-content {
+  text-align: center;
+}
+
+.error-code {
+  font-size: 10rem;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+.error-message {
+  margin-bottom: 20px;
+}
+
+.error-button {
+  padding: 10px 20px;
+  background-color: #137b33;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.error-button:hover {
+  background-color: #0f6229;
+}
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
