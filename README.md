@@ -21,7 +21,7 @@
 
 ## Quick Links
 
-Click to access the app: https://sep-realators-1.onrender.com
+Click to access the app: [https://sep-realators-1.onrender.com](https://sep-realtors-final-1.onrender.com)
 
 ### API Endpoints
 [GET] /api/properties: Retrieve a list of properties.
