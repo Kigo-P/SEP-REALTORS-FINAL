@@ -1,10 +1,10 @@
 from flask import request, session, make_response,jsonify
 from flask_restful import Resource
-from models import Property, User, Admin, Buyer, Image, Feature, Infrastructure, PurchaseRequest, ContactUs
+from models import Property, User, Admin, Buyer, Image, Feature, Infrastructure, PurchaseRequest, ContactUs, TokenBlocklist
 from config import app, db, api
 from flask_jwt_extended import create_access_token,JWTManager, create_refresh_token, jwt_required, get_jwt_identity, current_user, verify_jwt_in_request, get_jwt
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import  Blueprint,request,make_response,jsonify
+from flask import request,make_response,jsonify
 from flask_restful import Resource
 from datetime import timezone
 import datetime
@@ -43,11 +43,11 @@ def user_lookup_callback(_jwt_header, jwt_data):
     identity = jwt_data["sub"]
     return User.query.filter_by(id=identity).first()
 # confirming whether the jti is in the token blocklist
-# @jwt.token_in_blocklist_loader
-# def check_if_token_is_revoked(jwt_header, jwt_payload: dict):
-#     jti = jwt_payload["jti"]
-#     token_in_blocklist = TokenBlocklist.query.filter_by(jti=jti).first()
-#     return token_in_blocklist or None
+@jwt.token_in_blocklist_loader
+def check_if_token_is_revoked(jwt_header, jwt_payload: dict):
+    jti = jwt_payload["jti"]
+    token_in_blocklist = TokenBlocklist.query.filter_by(jti=jti).first()
+    return token_in_blocklist or None
 
 
 
@@ -668,19 +668,19 @@ class Signup(Resource):
     pass
 
 # # creating a Logout Resource
-# class Logout(Resource):
-#     # creating a get method 
-#     @jwt_required()
-#     def get(self):
-#         jti = get_jwt()["jti"]
-#         # using the date time to track the date and time the user has logged out
-#         now = datetime.datetime.now(timezone.utc)
-#         # adding and commiting the TokenBlocklist 
-#         db.session.add(TokenBlocklist(jti=jti, created_at=now))
-#         db.session.commit()
-#         # creating and returning a response
-#         response = {"message": "You have been logged out"}
-#         return response
+class Logout(Resource):
+    # creating a get method 
+    @jwt_required()
+    def get(self):
+        jti = get_jwt()["jti"]
+        # using the date time to track the date and time the user has logged out
+        now = datetime.datetime.now(timezone.utc)
+        # adding and commiting the TokenBlocklist 
+        db.session.add(TokenBlocklist(jti=jti, created_at=now))
+        db.session.commit()
+        # creating and returning a response
+        response = {"message": "You have been logged out"}
+        return response
 
 
 
@@ -699,7 +699,7 @@ api.add_resource(Admins, '/admins', endpoint = "admins")
 api.add_resource(UserByEmail, '/user-by-email/<string:email>', endpoint="/user_by_email")
 api.add_resource(Login, "/login", endpoint = "/login")
 api.add_resource(Signup, "/signup", endpoint = "/signup")
-# api.add_resource(Logout, "/logout", endpoint = "/logout")
+api.add_resource(Logout, "/logout", endpoint = "/logout")
 
 
 if __name__ == '__main__':

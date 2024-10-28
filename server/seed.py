@@ -6,6 +6,10 @@ from werkzeug.security import generate_password_hash
 
 with app.app_context():
 
+    #  dropping and creating all tables
+    # db.drop_all()
+    # db.create_all()
+
     # Initialize Faker
     fake = Faker()
 
