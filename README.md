@@ -22,6 +22,7 @@
 ## Quick Links
 
 Click to access the app: [https://sep-realators-1.onrender.com](https://sep-realtors-final-1.onrender.com)
+Presentation link: https://drive.google.com/drive/u/2/folders/1RvQ9RabSRz6FMsrXkn70VJyKb4D1ZKDi
 
 ### API Endpoints
 [GET] /api/properties: Retrieve a list of properties.
